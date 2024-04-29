@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recoger Coordenadas</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <button onclick="getLocation()">Obtener Ubicación</button>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(savePosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function savePosition(position) {
+            var latitud = position.coords.latitude;
+            var longitud = position.coords.longitude;
+            
+            // Enviar las coordenadas al script PHP para guardar en la base de datos
+            $.ajax({
+                type: "POST",
+                url: "guardar_coordenadas.php",
+                data: { latitud: latitud, longitud: longitud },
+                success: function(response){
+                    alert(response);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
